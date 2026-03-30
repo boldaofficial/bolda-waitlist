@@ -139,6 +139,7 @@
 
   .hero {
     gap: 14px;
+    margin-top: 20px;
   }
 
   .headline {
@@ -183,6 +184,7 @@
 
   .hero {
     gap: 16px;
+    margin-top: 28px;
   }
 
   .headline {
