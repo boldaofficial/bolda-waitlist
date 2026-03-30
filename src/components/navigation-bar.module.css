@@ -1,0 +1,123 @@
+.nav {
+  align-items: center;
+  background: var(--color-nav);
+  border-radius: 70px;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+
+.fullWidth {
+  width: 454px;
+}
+
+.logoWrap {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  height: 20px;
+  width: 118px;
+}
+
+.rightGroup {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.rightGroupWithSocial {
+  margin-left: 150px;
+}
+
+.iconLink,
+.iconPlaceholder {
+  align-items: center;
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.iconGlyph {
+  color: #121212;
+  height: 18px;
+  width: 18px;
+}
+
+.iconLink {
+  border-radius: 999px;
+  transition: opacity 160ms ease;
+}
+
+.iconLink:hover {
+  opacity: 0.65;
+}
+
+.actionLink,
+.actionButton {
+  align-items: center;
+  background: var(--color-accent);
+  border: 0;
+  border-radius: 36px;
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 700;
+  height: 52px;
+  justify-content: center;
+  min-width: 154px;
+  padding: 16px 32px;
+  text-align: center;
+}
+
+@media (max-width: 1199px) {
+  .nav {
+    position: static;
+    width: min(100%, 720px);
+  }
+
+  .rightGroupWithSocial {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 699px) {
+  .nav {
+    border-radius: 28px;
+    gap: 12px;
+    padding: 10px 10px;
+    width: 100%;
+  }
+
+  .logoWrap {
+    height: 18px;
+    width: 106px;
+  }
+
+  .rightGroup {
+    gap: 8px;
+  }
+
+  .rightGroupWithSocial {
+    margin-left: auto;
+  }
+
+  .iconLink,
+  .iconPlaceholder {
+    height: 30px;
+    width: 30px;
+  }
+
+  .iconGlyph {
+    height: 17px;
+    width: 17px;
+  }
+
+  .actionLink,
+  .actionButton {
+    font-size: 14px;
+    min-width: 128px;
+    padding: 14px 18px;
+  }
+}

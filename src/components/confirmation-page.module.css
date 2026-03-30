@@ -1,0 +1,143 @@
+.page {
+  background: var(--color-background);
+  display: grid;
+  gap: 24px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: center;
+  margin: 0 auto;
+  max-width: 1440px;
+  min-height: 100dvh;
+  padding: 24px 16px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.navigation {
+  align-self: start;
+  position: static;
+}
+
+.content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  align-self: center;
+  position: static;
+  text-align: center;
+  width: 479px;
+  max-width: 100%;
+}
+
+.copyGroup {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.heading {
+  color: var(--color-text);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.72px;
+  line-height: 1.08;
+  margin: 0;
+}
+
+.body {
+  color: var(--color-muted);
+  font-size: 17px;
+  line-height: 27px;
+  margin: 0;
+  max-width: 420px;
+  width: 100%;
+}
+
+.socialTextLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 28px;
+  justify-content: center;
+  width: 100%;
+}
+
+.socialTextLink,
+.socialTextPlaceholder {
+  color: var(--color-text);
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sharePrompt {
+  align-self: end;
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 20px;
+  margin: 0;
+  position: static;
+  text-align: center;
+}
+
+.shareButton {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 699px) {
+  .page {
+    gap: 20px;
+    min-height: 100dvh;
+    padding: 24px 12px 40px;
+  }
+
+  .content {
+    gap: 32px;
+  }
+
+  .heading {
+    font-size: 26px;
+  }
+
+  .body {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .socialTextLinks {
+    gap: 16px 24px;
+  }
+
+  .socialTextLink,
+  .socialTextPlaceholder {
+    font-size: 15px;
+    line-height: 23px;
+  }
+}
+
+@media (min-width: 1200px) and (min-height: 900px) {
+  .page {
+    gap: 28px;
+    padding: 24px 32px 40px;
+  }
+
+  .navigation {
+    position: static;
+  }
+
+  .content {
+    width: 479px;
+  }
+
+  .sharePrompt {
+    text-align: center;
+  }
+}

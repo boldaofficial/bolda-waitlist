@@ -1,0 +1,74 @@
+:root {
+  --color-background: #ffffff;
+  --color-text: #121212;
+  --color-muted: #474747;
+  --color-border: #e5e5e5;
+  --color-surface: #f8f8f8;
+  --color-nav: rgba(242, 242, 242, 0.5);
+  --color-accent: #ffd600;
+  --color-placeholder: #b0b0b0;
+  --color-disabled: #ececec;
+  --color-disabled-text: #8d8d8d;
+  --frame-width: 1440px;
+  --frame-height: 1024px;
+  --sileo-width: 460px;
+  --sileo-height: 56px;
+  --sileo-state-success: oklch(0.86 0.18 93);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--color-background);
+}
+
+body {
+  color: var(--color-text);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+[data-sileo-title] {
+  color: var(--color-text);
+  font-weight: 600;
+  text-align: center;
+}
+
+[data-sileo-description] {
+  color: var(--color-muted);
+  text-align: center;
+}

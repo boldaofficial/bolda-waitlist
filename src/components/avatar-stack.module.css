@@ -1,0 +1,43 @@
+.stack {
+  align-items: center;
+  display: inline-flex;
+  padding-right: 8px;
+}
+
+.avatar {
+  background: #fff1aa;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  height: 30px;
+  margin-right: -8px;
+  overflow: hidden;
+  position: relative;
+  width: 30px;
+}
+
+.imageOne {
+  height: 31px;
+  left: -5.25px;
+  max-width: none;
+  position: absolute;
+  top: -1px;
+  width: 46.5px;
+}
+
+.imageTwo {
+  height: 30px;
+  left: -8px;
+  max-width: none;
+  position: absolute;
+  top: 0;
+  width: 48px;
+}
+
+.imageThree {
+  height: 49px;
+  left: -2px;
+  max-width: none;
+  position: absolute;
+  top: -4px;
+  width: 33px;
+}
