@@ -13,7 +13,17 @@ const resendWebhookSecret = process.env.RESEND_WEBHOOK_SECRET?.trim();
 const emailBannerUrl =
   "https://res.cloudinary.com/dhd6wvd09/image/upload/v1775027048/Bolda_mail_qk3hig.png";
 
-const resend = new Resend(resendApiKey);
+let resend: Resend | undefined;
+
+function getResendClient() {
+  if (!resend) {
+    if (!resendApiKey) {
+      throw new Error("Missing RESEND_API_KEY environment variable.");
+    }
+    resend = new Resend(resendApiKey);
+  }
+  return resend;
+}
 
 const trackedResendEvents = new Set<TrackedResendEvent>([
   "email.delivered",
@@ -46,7 +56,7 @@ export async function sendWaitlistConfirmationEmail({
 }: {
   email: string;
 }) {
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResendClient().emails.send({
     from: resendFromEmail,
     to: email,
     replyTo: resendReplyToEmail,
@@ -77,7 +87,7 @@ export async function parseResendWebhookPayload(request: Request) {
       throw new Error("Missing Resend webhook signature headers.");
     }
 
-    return resend.webhooks.verify({
+    return getResendClient().webhooks.verify({
       payload,
       headers,
       webhookSecret,
