@@ -175,7 +175,7 @@ function getWaitlistConfirmationEmailHtml() {
     "</ol>",
     '<p style="font-size: 16px; font-weight: 700; line-height: 1.7; margin: 0 0 16px;">Hit reply and tell us what&rsquo;s been hardest about interviews for you</p>',
     `<p style="font-size: 16px; line-height: 1.7; margin: 0 0 16px;">Reply to us at <a href="mailto:${teamInboxEmail}" style="color: #121212; font-weight: 600; text-decoration: underline;">${teamInboxEmail}</a>. We read and reply to every email.</p>`,
-    '<p style="font-size: 16px; line-height: 1.7; margin: 24px 0 0;">Cheers,<br />The Bolda team.</p>',
+    '<p style="font-size: 16px; line-height: 1.7; margin: 24px 0 0;">Cheers,<br />The Bolda team</p>',
     "</div>",
     "</div>",
     "</div>",
