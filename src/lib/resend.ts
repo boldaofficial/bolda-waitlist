@@ -3,17 +3,9 @@ import { Resend, type WebhookEventPayload } from "resend";
 import type { WaitlistEvent } from "@/lib/manta";
 import { siteConfig } from "@/lib/site";
 
-const resendApiKey = process.env.RESEND_API_KEY?.trim();
-const resendFromEmail =
-  process.env.RESEND_FROM_EMAIL?.trim() || "Bolda <hello@usebolda.com>";
 const teamInboxEmail = "hello@bolda.com";
-const resendReplyToEmail =
-  process.env.RESEND_REPLY_TO_EMAIL?.trim() || teamInboxEmail;
-const resendWebhookSecret = process.env.RESEND_WEBHOOK_SECRET?.trim();
 const emailBannerUrl =
   "https://res.cloudinary.com/dhd6wvd09/image/upload/v1775027048/Bolda_mail_qk3hig.png";
-
-const resend = new Resend(resendApiKey);
 
 const trackedResendEvents = new Set<TrackedResendEvent>([
   "email.delivered",
@@ -34,11 +26,11 @@ type TrackedResendWebhookPayload = Extract<
 >;
 
 export function isResendConfigured() {
-  return Boolean(resendApiKey);
+  return Boolean(getResendApiKey());
 }
 
 export function getResendWebhookSecret() {
-  return resendWebhookSecret;
+  return process.env.RESEND_WEBHOOK_SECRET?.trim();
 }
 
 export async function sendWaitlistConfirmationEmail({
@@ -46,10 +38,12 @@ export async function sendWaitlistConfirmationEmail({
 }: {
   email: string;
 }) {
+  const resend = getResendClient();
+
   const { data, error } = await resend.emails.send({
-    from: resendFromEmail,
+    from: getResendFromEmail(),
     to: email,
-    replyTo: resendReplyToEmail,
+    replyTo: getResendReplyToEmail(),
     subject: "Welcome to Bolda!",
     html: getWaitlistConfirmationEmailHtml(),
     text: getWaitlistConfirmationEmailText(),
@@ -77,7 +71,7 @@ export async function parseResendWebhookPayload(request: Request) {
       throw new Error("Missing Resend webhook signature headers.");
     }
 
-    return resend.webhooks.verify({
+    return getResendWebhookVerifier().webhooks.verify({
       payload,
       headers,
       webhookSecret,
@@ -143,6 +137,34 @@ function getResendWebhookHeaders(request: Request) {
     timestamp,
     signature,
   };
+}
+
+function getResendClient() {
+  const resendApiKey = getResendApiKey();
+
+  if (!resendApiKey) {
+    throw new Error("Missing RESEND_API_KEY.");
+  }
+
+  return new Resend(resendApiKey);
+}
+
+function getResendApiKey() {
+  return process.env.RESEND_API_KEY?.trim();
+}
+
+function getResendFromEmail() {
+  return process.env.RESEND_FROM_EMAIL?.trim() || "Bolda <hello@usebolda.com>";
+}
+
+function getResendReplyToEmail() {
+  return process.env.RESEND_REPLY_TO_EMAIL?.trim() || teamInboxEmail;
+}
+
+function getResendWebhookVerifier() {
+  // Webhook verification only uses the signing secret, but the SDK still
+  // requires a truthy constructor value.
+  return new Resend("re_placeholder");
 }
 
 function getWaitlistConfirmationEmailHtml() {
