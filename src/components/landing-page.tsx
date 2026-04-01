@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useEffect, useMemo, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { sileo } from "sileo";
 
@@ -17,13 +17,16 @@ export function LandingPage() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasTriedSubmit, setHasTriedSubmit] = useState(false);
+  const [hasBlurredEmail, setHasBlurredEmail] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const redirectTimerRef = useRef<number | null>(null);
   const router = useRouter();
 
-  const isFormValid = useMemo(() => {
-    return fullName.trim().length > 1 && emailPattern.test(email.trim());
-  }, [email, fullName]);
+  const normalizedEmail = email.trim().toLowerCase();
+  const isEmailValid = emailPattern.test(normalizedEmail);
+  const isFormValid = fullName.trim().length > 1 && isEmailValid;
+  const showEmailError = Boolean(normalizedEmail) && (hasBlurredEmail || hasTriedSubmit) && !isEmailValid;
 
   useEffect(() => {
     return () => {
@@ -35,6 +38,7 @@ export function LandingPage() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setHasTriedSubmit(true);
 
     if (!isFormValid || isSubmitting) {
       return;
@@ -61,11 +65,8 @@ export function LandingPage() {
         throw new Error(payload?.error || "We couldn't join the waitlist right now.");
       }
 
-      const normalizedEmail = email.trim().toLowerCase();
-
       sileo.success({
-        description: `We've added ${normalizedEmail} to our waitlist. We'll let you know when Bolda launches.`,
-        title: "You’re on the waitlist",
+        title: "You're on the waitlist!",
       });
 
       redirectTimerRef.current = window.setTimeout(() => {
@@ -100,9 +101,8 @@ export function LandingPage() {
 
         <div className={styles.hero}>
           <h1 className={styles.headline}>
-            PRACTICE 1:1 INTERVIEWS WITH PROFESSIONALS + AI
-            <br />
-            GET HIRED
+            <span className={styles.headlineLine}>Practice 1:1 interviews with professionals & AI</span>
+            <span className={styles.headlineSecondLine}>Get hired</span>
           </h1>
 
           <div className={styles.subline}>
@@ -133,8 +133,10 @@ export function LandingPage() {
           <input
             id="email-address"
             autoComplete="email"
-            className={styles.field}
+            aria-invalid={showEmailError}
+            className={`${styles.field} ${showEmailError ? styles.fieldInvalid : ""}`}
             name="email"
+            onBlur={() => setHasBlurredEmail(true)}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="Email address"
             type="email"
@@ -159,6 +161,10 @@ export function LandingPage() {
             {isSubmitting ? "Joining..." : "Join the waitlist"}
           </button>
         </form>
+
+        <p aria-live="polite" className={styles.formError} role={showEmailError ? "alert" : undefined}>
+          {showEmailError ? "Enter a valid email" : ""}
+        </p>
       </section>
     </ViewportFrame>
   );

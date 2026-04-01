@@ -25,34 +25,53 @@
   flex-direction: column;
   gap: 16px;
   align-self: center;
-  max-width: 860px;
+  max-width: 980px;
   text-align: center;
   width: 100%;
 }
 
 .headline {
+  align-items: center;
   color: var(--color-text);
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-headline), sans-serif;
-  font-size: 34px;
+  font-size: 38px;
   font-style: normal;
   font-weight: 900;
-  letter-spacing: -0.56px;
-  line-height: 0.94;
+  gap: 4px;
+  letter-spacing: -0.64px;
+  line-height: 0.98;
   margin: 0;
-  max-width: 680px;
+  max-width: 920px;
   position: static;
   text-align: center;
   text-transform: uppercase;
   width: 100%;
 }
 
+.headlineLine {
+  display: block;
+  max-width: 100%;
+}
+
+.headlineSecondLine {
+  display: block;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
 .subline {
   align-items: center;
   display: inline-flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 10px 12px;
   justify-content: center;
+  margin-top: 4px;
+  max-width: 460px;
   position: static;
-  width: 100%;
+  width: auto;
 }
 
 .sublineText {
@@ -60,7 +79,7 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .form {
@@ -97,6 +116,11 @@
   border-color: var(--color-text);
 }
 
+.fieldInvalid,
+.fieldInvalid:focus {
+  border-color: #c43d2f;
+}
+
 .submitButton {
   align-items: center;
   background: var(--color-accent);
@@ -115,6 +139,15 @@
   transition:
     transform 160ms ease,
     opacity 160ms ease;
+}
+
+.formError {
+  color: #c43d2f;
+  font-size: 14px;
+  line-height: 18px;
+  margin: -2px 0 0;
+  min-height: 18px;
+  text-align: center;
 }
 
 .submitButton:hover:not(:disabled) {
@@ -138,26 +171,32 @@
   }
 
   .hero {
-    gap: 14px;
+    gap: 10px;
     margin-top: 20px;
   }
 
   .headline {
     font-size: 32px;
+    gap: 2px;
     letter-spacing: -0.44px;
-    line-height: 0.95;
-    max-width: 340px;
+    line-height: 1;
+    max-width: 360px;
+  }
+
+  .headlineSecondLine {
+    white-space: normal;
   }
 
   .subline {
-    flex-direction: column;
     gap: 8px;
+    margin-top: 0;
+    max-width: 320px;
   }
 
   .sublineText {
     font-size: 13px;
+    max-width: 28ch;
     text-align: center;
-    white-space: normal;
   }
 
   .form {
@@ -190,8 +229,12 @@
   .headline {
     font-size: 46px;
     letter-spacing: -0.84px;
-    line-height: 0.92;
-    max-width: 760px;
+    line-height: 0.96;
+    max-width: 820px;
+  }
+
+  .subline {
+    max-width: 540px;
   }
 
   .form {
@@ -217,12 +260,13 @@
   .headline {
     font-size: 54px;
     letter-spacing: -1px;
-    line-height: 0.9;
-    max-width: 820px;
+    line-height: 0.94;
+    max-width: 960px;
   }
 
   .subline {
     width: auto;
+    max-width: none;
   }
 
   .sublineText {

@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 
 import {
-  getMantaWaitlistHeaders,
-  getMantaWaitlistRole,
-  getMantaWaitlistUrl,
-  isMantaConfigured,
+  buildMantaWaitlistSubmissionPayload,
+  postToMantaWaitlist,
+  waitlistEntryExists,
 } from "@/lib/manta";
+import { isResendConfigured, sendWaitlistConfirmationEmail } from "@/lib/resend";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -21,32 +21,38 @@ export async function POST(request: Request) {
     const email = body.email?.trim().toLowerCase() ?? "";
     const role = body.role?.trim() ?? "";
 
-    if (!fullName || !emailPattern.test(email)) {
+    if (!fullName) {
       return NextResponse.json(
-        { error: "Please provide a full name and a valid email address." },
+        { error: "Please provide your full name." },
         { status: 400 },
       );
     }
 
-    if (!isMantaConfigured()) {
+    if (!emailPattern.test(email)) {
       return NextResponse.json(
         {
-          error: "MantaHQ is not configured yet. Add MANTA_WAITLIST_URL to .env.local.",
+          error: "Enter a valid email",
         },
-        { status: 503 },
+        { status: 400 },
       );
     }
 
-    const response = await fetch(getMantaWaitlistUrl(), {
-      body: JSON.stringify({
+    if (await waitlistEntryExists(email)) {
+      return NextResponse.json(
+        {
+          error: "This email is already on the waitlist.",
+        },
+        { status: 409 },
+      );
+    }
+
+    const response = await postToMantaWaitlist(
+      buildMantaWaitlistSubmissionPayload({
         email,
-        fullname: fullName,
-        role: role || getMantaWaitlistRole(),
+        fullName,
+        role,
       }),
-      headers: getMantaWaitlistHeaders(),
-      method: "POST",
-      cache: "no-store",
-    });
+    );
 
     if (response.status === 409) {
       return NextResponse.json(
@@ -66,7 +72,17 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ ok: true }, { status: 201 });
+    let emailSent = false;
+
+    if (isResendConfigured()) {
+      try {
+        emailSent = Boolean(await sendWaitlistConfirmationEmail({ email }));
+      } catch (error) {
+        console.error("Waitlist confirmation email failed", error);
+      }
+    }
+
+    return NextResponse.json({ ok: true, emailSent }, { status: 201 });
   } catch (error) {
     console.error("Waitlist submission failed", error);
 
